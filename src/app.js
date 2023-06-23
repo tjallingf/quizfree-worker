@@ -4,6 +4,10 @@ const express = require('express');
 const app = express();
 
 const main = async () => {
+    app.get('/', (req, res) => {
+        res.send('Hello world!');
+    })
+
     app.get('/api/quizlet/sets/:id', async (req, res) => {
         const set = new QuizletSet(req.params['id']);
 
