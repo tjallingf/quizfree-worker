@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const QuizletSet = require('./utils/quizlet/QuizletSet');
 const express = require('express');
 const app = express();
+require('dotenv').config();
 
 const main = async () => {
     app.get('/', (req, res) => {
@@ -12,7 +13,18 @@ const main = async () => {
         const set = new QuizletSet(req.params['id']);
 
         // Creating a new browser prevents captcha's
-        const browser = await puppeteer.launch({ headless: "new" }); 
+        const browser = await puppeteer.launch({ 
+            args: [
+                '--disable-setuid-sandbox',
+                '--no-sandbox',
+                '--single-process',
+                '--no-zygote'
+            ],
+            executablePath: process.env.NODE_ENV === 'production'
+                ? process.env.PUPPETEER_EXECUTABLE_PATH
+                : puppeteer.executablePath()
+        }); 
+        
         set.fetch(browser)
             .then(data => {
                 res.json(data);
