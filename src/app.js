@@ -18,8 +18,10 @@ const main = async () => {
             }) 
     })
 
-    app.listen(8080, () => {
-        console.log('Quizfree worker listening at http://localhost:8080.');
+    const port = 80;
+
+    app.listen(port, () => {
+        console.log(`Quizfree worker listening at http://localhost:${port}.`);
     })
 }
 
